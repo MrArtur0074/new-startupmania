@@ -1,0 +1,77 @@
+.containter {
+    min-height: 100vh;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 90px 0 40px 0;
+}
+.h1 {
+    font-size: 80px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.filter {
+    display: flex;
+    margin-bottom: 20px;
+}
+.filter > div {
+    display: flex;
+}
+.filter .active{
+    background-color: orange !important;
+}
+.all, .my {
+    border: 2px solid orange;
+}
+.searchDiv, .option {
+    border: 2px solid #5fa9dc;
+}
+.all, .my, .searchDiv, .option {
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.searchDiv input{
+    background-color: transparent;
+    border: none;
+}
+.searchDiv input::placeholder {
+    background-color: transparent;
+    border: none;
+    color: black;
+}
+.searchDiv input:focus {
+    border: none;
+}
+.right {
+    margin-left: auto;
+    display: flex;
+    gap: 20px;
+}
+.left {
+    display: flex;
+    gap: 20px;
+}
+.idea {
+    margin-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    border: 2px solid black;
+    border-radius: 20px;
+    padding: 20px;
+}
+.ideasList {
+    max-height: 600px;
+    overflow-y: scroll;
+}

@@ -1,0 +1,53 @@
+.containter {
+    height: 100vh;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    align-items: center;
+    justify-content: center;
+}
+.upperBlock, .underBlock{
+    display: flex;
+    gap: 0 10px;
+}
+.underBlock {
+    justify-self: right;
+}
+.title {
+    font-size: 92px;
+    font-weight: 800;
+}
+.timeTitle {
+    font-size: 56px;
+    color: red;
+    font-weight: 800;
+}
+.underTimeTitle {
+    padding-left: 50px;
+    font-size: 40px;
+    font-weight: 800;
+    color: red;
+}
+.timeBlock {
+    display: flex;
+    gap: 0 10px;
+}
+.days, .minutes, .seconds, .hours {
+    font-size: 30px;
+    color: purple;
+    font-weight: 600;
+    text-align: right;
+}
+.hours, .seconds {
+    padding-top: 50px;
+}
+.orangeText {
+    color: orange;
+    font-size: 30px;
+    font-weight: 600;
+}
