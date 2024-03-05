@@ -1,8 +1,6 @@
 import React from 'react';
 import DefaultTemplate from "@/components/DefaultTemplate.jsx";
-import Navbar from "@/components/navbar/Navbar.jsx";
 import styles from "@/pages/LoginPage.module.css";
-import background from "@/assets/background/login.png";
 import {Link, useNavigate} from "react-router-dom";
 import {loginUserData, getUser} from '@/app/api.js';
 import {UserContext} from "@/App.jsx";
@@ -51,7 +49,7 @@ const LoginPage = () => {
     return (
         <>
             <DefaultTemplate>
-                <div className={styles.containter} style={{backgroundImage: `url(${background})`}}>
+                <div className={styles.containter}>
                     <div className={styles.wrapper}>
                         <h1 className={styles.h1}>ВОЙТИ В АККАУНТ</h1>
                         <div>
@@ -74,7 +72,6 @@ const LoginPage = () => {
                     </div>
                 </div>
             </DefaultTemplate>
-            <Navbar />
         </>
     );
 }
