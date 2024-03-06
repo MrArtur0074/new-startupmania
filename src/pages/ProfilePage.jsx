@@ -24,7 +24,7 @@ function ProfilePage() {
                 navigate('/login');
             } else {
                 try {
-                const response = await axios.get('/api/v1/regauth/user-info/', {
+                const response = await axios.get('/regauth/user-info/', {
                 headers: {'Authorization': `Bearer ${access_token}`}
                 });
                 if (response.data.code){
@@ -32,7 +32,6 @@ function ProfilePage() {
                 setError('"Ваша сессия истекла. Пожалуйста, войдите снова, чтобы продолжить пользоваться нашими услугами.');
                 navigate(`/login?error=${encodeURIComponent('auth')}`)
                 } else {
-                console.log(response.data)
                 setUser(response.data)
                 }
                 } catch (e) {
@@ -72,7 +71,7 @@ function ProfilePage() {
                             </p>
                         </div>
                         <ul id="tags">
-                            {/* {user.tags.map((tag, index) => (<li key={index} className={`tag`}>{tag}</li>))} */}
+                            {/* {user?.tags?.map((tag, index) => (<li key={index} className={`tag`}>{tag}</li>))} */}
                             {user.tags}
                         </ul>
                     </div>
@@ -93,16 +92,16 @@ function ProfilePage() {
                                     {user.email}
                                 </p>
                             </div>
-                            {/* {user.skills.length > 0 && (
+                            {user?.skills?.length > 0 && (
                                 <div className="data_block" style={{ backgroundColor: 'rgba(251,184,0,0.50)'}}>
-                                    <h1 className='data_header'>Навыки</h1> */}
-                                    {/* {user.skills.map((skill,index)=>(<p key={index} className='skill'>{skill}</p>))} */}
-                                    {/* {user.skills}
+                                    <h1 className='data_header'>Навыки</h1>
+                                    {/* {user.skills?.map((skill,index)=>(<p key={index} className='skill'>{skill}</p>))} */}
+                                    {user.skills}
                                 </div>
-                            )} */}
+                            )}
                         </div>
                         <div className="data_section">
-                            {/* {user.works.length > 0 && (
+                            {user?.works?.length > 0 && (
                                 <div className="data_block" style={{ backgroundColor: 'rgba(251,184,0,0.50)'}}>
                                     <h1 className='data_header'>Работы</h1>
                                     {user.works.map((work,id)=>(
@@ -112,8 +111,8 @@ function ProfilePage() {
                                         </p>
                                     ))}
                                 </div>
-                            )} */}
-                            {/* {user.socials.length > 0 && (
+                            )}
+                            {user?.socials?.length > 0 && (
                                 <div className="data_block" style={{ backgroundColor: 'rgba(147,74,247,0.50)'}}>
                                     <h1 className='data_header'>Контакты</h1>
                                     <p className='link'>{user.phone_number}</p>
@@ -124,7 +123,7 @@ function ProfilePage() {
                                         </p>
                                     ))}
                                 </div>
-                            )} */}
+                            )}
                         </div>
                     </div>
                     <div className="data_container" style={{display: showContainer2?'flex':'none'}}>

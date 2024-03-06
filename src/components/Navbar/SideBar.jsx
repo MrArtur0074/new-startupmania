@@ -1,6 +1,7 @@
 import styles from '../Navbar/SideBar.module.scss'
 import React, { useState, useContext } from 'react';
 import { UserContext } from '../../App.jsx';
+import { Link } from 'react-router-dom';
 
 
 const SideBar = () => {
@@ -17,32 +18,32 @@ const animationStyles = {
   return (
     <div className={styles.sidebar} style={{ transform: translate ? 'translateX(250px)' : 'translateX(0)' }}>
       <div className={styles.sidebar_container}>
-        <a className={styles.logo_container} style={{cursor:'pointer'}} href='/'>
+        <Link className={styles.logo_container} style={{cursor:'pointer'}} to='/'>
           <img src="../src/assets/icons/logo.svg" alt="" />
-        </a>
+        </Link>
         {user &&
         (<ul className={styles.nav}>
           {items?.map((item, index) => (
             <li className={styles.nav_element} key={index}>
-              <a className={styles.nav_link} href={item.href}>
+              <Link className={styles.nav_link} to={item.href}>
                 <img className={styles.nav_logo} src={item.img} alt={`${item.alt} Icon`}/>
                 {item.title}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>)
         }
         <div className={styles.profile_out}>
           {user?
-          (<a className={styles.nav_link} href="/login" onClick={() => localStorage.clear()}>
+          (<Link className={styles.nav_link} to="/login" onClick={() => localStorage.clear()}>
             <img className={styles.nav_logo} src='../src/assets/icons/signout.svg' alt='<' />
             Выйти
-          </a>
+          </Link>
           ):(
-          <a className={styles.nav_link} href="/login">
+          <Link className={styles.nav_link} to="/login">
             <img className={styles.nav_logo} src='../src/assets/icons/signin.svg' alt='>'/>
             Войти
-          </a>
+          </Link>
           )}
         </div>
       </div>
@@ -52,13 +53,13 @@ const animationStyles = {
       <div className={styles.topbar}>
         <div className={styles.topbar_container}>
           <img className={styles.topbar_logo} src="../src/assets/icons/logo.svg" alt="" />
-          {user?(<a href='cabinet' className={styles.profile_top}>
+          {user?(<Link to='cabinet' className={styles.profile_top}>
             <span>Профиль</span>
             <img width={45} height={45} src="../src/assets/icons/user.svg" alt="" />
-          </a>):(<a href='login' className={styles.profile_top}>
+          </Link>):(<Link to='login' className={styles.profile_top}>
             <span>Войти</span>
             <img width={35} height={35} src="../src/assets/icons/signin.svg" alt="" />
-          </a>)}
+          </Link>)}
         </div>
       </div>
     </div>

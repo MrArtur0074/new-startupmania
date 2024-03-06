@@ -4,6 +4,7 @@ import "../pages/IdeasPage.scss";
 import filter from "@/assets/icons/filter.svg";
 import {getAllIdeas} from "@/app/api.js";
 import {UserContext} from "@/App.jsx";
+import axios from 'axios';
 
 function IdeasPage() {
     const [user, setUser] = useContext(UserContext);
@@ -35,7 +36,7 @@ function IdeasPage() {
         navigate('/login');
         } else {
     try {
-        const response = await axiosClient.post(`/api/v1/idea/ideas/${id}/like/`,{},{
+        const response = await axios.post(`/api/v1/idea/ideas/${id}/like/`,{},{
         headers: {'Authorization': `Bearer ${access_token}`}
         });
         if (response.data.code){
@@ -55,7 +56,7 @@ function IdeasPage() {
         navigate('/login');
         } else {
     try {
-        const response = await axiosClient.post(`/api/v1/idea/ideas/${id}/delite-like/`,{},{
+        const response = await axios.post(`/api/v1/idea/ideas/${id}/delite-like/`,{},{
         headers: {'Authorization': `Bearer ${access_token}`}
         });
         if (response.data.code){
@@ -75,7 +76,7 @@ function IdeasPage() {
         navigate('/login');
         } else {
     try {
-        const response = await axiosClient.post(`/api/v1/idea/ideas/${id}/supporter/`,{},{
+        const response = await axios.post(`/api/v1/idea/ideas/${id}/supporter/`,{},{
         headers: {'Authorization': `Bearer ${access_token}`}
         });
         if (response.data.code){
@@ -96,7 +97,7 @@ function IdeasPage() {
         navigate('/login');
         } else {
     try {
-        const response = await axiosClient.post(`/api/v1/idea/ideas/${id}/supporter-decline/`,{},{
+        const response = await axios.post(`/api/v1/idea/ideas/${id}/supporter-decline/`,{},{
         headers: {'Authorization': `Bearer ${access_token}`}
         });
         if (response.data.code){
@@ -165,8 +166,6 @@ function IdeasPage() {
         }
       }, [ideas, searchQuery]);
 
-    console.log(ideas)
-
     useEffect(() => {
         getAllIdeas().then((response) => {
             setIdeas(response.data);
@@ -180,6 +179,7 @@ function IdeasPage() {
         if (tab === 'all') {
             setFilteredIdeas(ideas);
         } else if (tab === 'my') {
+            console.log(user)
             setFilteredIdeas(ideas.filter((idea) => user.id === idea.created_by));
         }
     }
@@ -214,6 +214,8 @@ function IdeasPage() {
                         />
                         </div>
                         <div id="filter_container">
+                            <div onClick={() => setTab('all')} className={`tab_filter ${tab === 'all'?'active_tab' : ''}`}>Все идеи</div>
+                            <div onClick={() => setTab('my')} className={`tab_filter  ${tab === 'my'?'active_tab' : ''}`}>Мои идеи</div>
                             <div className='option'>
                                 <img src={filter}/>
                             </div>

@@ -22,8 +22,10 @@ export const getUser = (token) => {
 };
 
 export const getAllIdeas = () => {
-    // setAuthToken(token);
-    return axios.get(`/idea/all-ideas/`);
+    const access_token = localStorage.getItem('access_token')
+    return axios.get('/idea/all-ideas/', {
+        headers: {'Authorization': `Bearer ${access_token}`}
+      })
 };
 
 

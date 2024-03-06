@@ -50,4 +50,9 @@ h1{margin:0;}
 #filter_container{
     display:flex;
     gap: 30px;
+    justify-content: end;
+}
+.tab_filter{border-radius:50px;padding:10px 15px;font-size:18px;background-color:white;font-family:'Unbounded',sans-serif;border:solid 2px #5fa9dc;}
+.active_tab{
+    background-color:#FBB800;border:solid 2px #000;
 }
