@@ -9,9 +9,8 @@ function App() {
     const [user, setUser] = useState(false);
 
     useEffect(() => {
-        const access = localStorage.getItem('access');
-        const refresh = localStorage.getItem('refresh');
-        if (access && refresh) {
+        const access = localStorage.getItem('access_token');
+        if (access) {
             getUser(access)
                 .then(response => {
                     console.log(response.data)

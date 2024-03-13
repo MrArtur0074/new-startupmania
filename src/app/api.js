@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Базовый URL для всех запросов
-axios.defaults.baseURL = 'http://217.151.230.35/api/v1';
+axios.defaults.baseURL = 'http://217.151.230.35:888/api/v1/';
 
 // Функция для установки токена авторизации в заголовок запроса
 const setAuthToken = (token) => {
