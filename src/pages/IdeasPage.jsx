@@ -4,11 +4,7 @@ import "../pages/IdeasPage.scss";
 import filter from "@/assets/icons/filter.svg";
 import { getAllIdeas } from "@/app/api.js";
 import { UserContext } from "@/App.jsx";
-import axios from 'axios';
-import liked from '@/assets/icons/liked.svg'
-import like from '@/assets/icons/like.svg'
-import supported from '@/assets/icons/supported.svg'
-import support from '@/assets/icons/support.svg'
+import Idea from "@/components/ideas/Idea.jsx";
 
 function IdeasPage() {
     const [user, setUser] = useContext(UserContext);
@@ -18,6 +14,7 @@ function IdeasPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredIdeas, setFilteredIdeas] = useState([]);
     const access_token = localStorage.getItem('access_token');
+
     const unAuthNav = () => {
         localStorage.removeItem('access_token','id');
         setError('"Ваша сессия истекла. Пожалуйста, войдите снова, чтобы продолжить пользоваться нашими услугами.');
@@ -26,123 +23,10 @@ function IdeasPage() {
     const showCreate = () => {
         { create ? setCreate(false) : setCreate(true) }
     }
-    const handleLikeClick = (id) => {
-        console.log(id)
-        setFilteredIdeas(prevIdeas => {
-            return prevIdeas.map(idea => {
-                if (idea.id === id) {
-                    if (idea.user_liked) {
-                        handleDislikeIdea(id)
-                    } else {
-                        handleLikeIdea(id)
-                    }
-                    return {
-                        ...idea,
-                        user_liked: !idea.user_liked,
-                        likes: idea.user_liked ? idea.likes - 1 : idea.likes + 1
-                    };
-                }
-                return idea;
-            });
-        });
-    }
-    const handleSupportClick = (id) => {
-        setFilteredIdeas(prevIdeas => {
-            return prevIdeas.map(idea => {
-                if (idea.id === id) {
-                    if (idea.is_supported) {
-                        handleStopSupportIdea(id)
-                    } else {
-                        handleSupportIdea(id)
-                    }
-                    return {
-                        ...idea,
-                        is_supported: !idea.is_supported,
-                        likes: idea.is_supported ? idea.supporters_count - 1 : idea.supporters_count + 1
-                    };
-                }
-                return idea;
-            });
-        });
-    }
-    const handleLikeIdea = async (id) => {
-        if (!access_token) {
-            navigate('/login');
-        } else {
-            try {
-                const response = await axios.post(`/idea/ideas/${id}/like/`, {}, {
-                    headers: { 'Authorization': `Bearer ${access_token}` }
-                });
-                if (response.data.code){unAuthNav()}
-            } catch (error) {
-                console.error('Не получилось сделать запрос', error);
-            }
-        }
-    };
-
-    const handleDislikeIdea = async (id) => {
-        if (!access_token) {
-            navigate('/login');
-        } else {
-            try {
-                const response = await axios.post(`/idea/ideas/${id}/delite-like/`, {}, {
-                    headers: { 'Authorization': `Bearer ${access_token}` }
-                });
-                if (response.data.code){unAuthNav()}
-            } catch (error) {
-                console.error('Не получилось сделать запрос', error);
-            }
-        }
-    };
-    const handleSupportIdea = async (id) => {
-        if (!access_token) {
-            navigate('/login');
-        } else {
-            try {
-                const response = await axios.post(`/idea/ideas/${id}/supporter/`, {}, {
-                    headers: { 'Authorization': `Bearer ${access_token}` }
-                });
-                if (response.data.code){unAuthNav()}
-            } catch (error) {
-                console.error('Не получилось сделать запрос', error);
-            }
-        }
-    };
-    const handleStopSupportIdea = async (id) => {
-        if (!access_token) {
-            navigate('/login');
-        } else {
-            try {
-                const response = await axios.post(`/idea/ideas/${id}/supporter-decline/`, {}, {
-                    headers: { 'Authorization': `Bearer ${access_token}` }
-                });
-                if (response.data.code){unAuthNav()}
-            } catch (error) {
-                console.error('Не получилось сделать запрос', error);
-            }
-        }
-    };
 
     const viewIdeas = filteredIdeas.map((ideaBlock, index) => {
         return (
-            <div className='idea_block ideas_block' key={ideaBlock.id}>
-                <div className='idea'>
-                    <h3 className='idea_name'>{ideaBlock.name}</h3>
-                    <p className='idea_description'>{ideaBlock.description}</p>
-                    {/* <ul className='idea_tags'>{ideaBlock.hashtags.map((hashtag,index)=>(<a value={hashtag} key={index} className='idea_tag'>{hashtag}</a>))}</ul> */}
-                </div>
-                <div className='idea_buttons'>
-                    <div className='idea_block_button' style={{ color: 'rgb(221, 64, 63)' }} >
-                        <img className='idea_button_img' onClick={() => handleLikeClick(ideaBlock.id)} src={ideaBlock.user_liked ? liked : like} alt="" />
-                        {ideaBlock.likes}
-                    </div>
-                    <div className='idea_block_button' style={{ color: 'rgb(147, 74, 247)' }} >
-                        <img className='idea_button_img' onClick={() => handleSupportClick(ideaBlock.id)} src={ideaBlock.is_supported ? supported : support} alt="" />
-                        {ideaBlock.supporters_count}
-                    </div>
-                    <a className='idea_view' href='/idea'>Просмотр</a>
-                </div>
-            </div>
+            <Idea key={index} idea={ideaBlock}/>
         );
     });
 
