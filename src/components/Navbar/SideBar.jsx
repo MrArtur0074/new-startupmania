@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 
 const SideBar = () => {
-const [user, setuser] = useContext(UserContext)
+const [user, setUser] = useContext(UserContext)
 const [translate, setTranslate] = useState(false);
 const [isAnimating, setIsAnimating] = useState(false);
 const handleButtonClick = () => {

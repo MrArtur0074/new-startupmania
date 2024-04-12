@@ -11,11 +11,13 @@ function Idea(props) {
     const [process, setProcess] = useState(false)
     const access_token = localStorage.getItem('access_token');
     const [likeCount, setLikeCount] = useState(null)
+    const [supportCount,setSupportCount] = useState (null)
 
     useEffect(() => {
         setLike(props?.idea?.user_liked)
         setSupport(props?.idea?.is_supported)
         setLikeCount(props?.idea.likes)
+        setSupportCount(props?.idea.supporters_count)
     }, []);
 
     const handleLike = async () => {
@@ -25,6 +27,16 @@ function Idea(props) {
         } else if (like && !process) {
             setProcess(true)
             handleDislikeIdea()
+        }
+    }
+
+    const handleSupport = async () => {
+        if (support === false && !process) {
+            setProcess(true)
+            handleSupportIdea()
+        } else if (support && !process) {
+            setProcess(true)
+            handleStopSupportIdea()
         }
     }
 
@@ -61,8 +73,10 @@ function Idea(props) {
         try {
             const response = await axios.post(`/idea/ideas/${props?.idea?.id}/supporter/`, {}, {
                 headers: { 'Authorization': `Bearer ${access_token}` }
-            }).then(() => {
+            }).then(res => {
                 setProcess(false)
+                setSupport(true)
+                setSupportCount(res?.data?.supporters_count)
             });
         } catch (error) {
             console.error('Не получилось сделать запрос', error);
@@ -73,8 +87,10 @@ function Idea(props) {
         try {
             const response = await axios.post(`/idea/ideas/${props?.idea?.id}/supporter-decline/`, {}, {
                 headers: { 'Authorization': `Bearer ${access_token}` }
-            }).then(() => {
+            }).then(res => {
                 setProcess(false)
+                setSupport(false)
+                setSupportCount(res?.data?.supporters_count)
             });
         } catch (error) {
             console.error('Не получилось сделать запрос', error);
@@ -95,9 +111,9 @@ function Idea(props) {
                     {likeCount}
                 </div>
                 <div className='idea_block_button' style={{color: 'rgb(147, 74, 247)'}}>
-                    <img className='idea_button_img'
+                    <img className='idea_button_img' onClick={handleSupport}
                          src={props?.idea?.is_supported ? supported : support_img} alt=""/>
-                    {props?.idea?.supporters_count}
+                    {supportCount}
                 </div>
                 <a className='idea_view' href='/idea'>Просмотр</a>
             </div>

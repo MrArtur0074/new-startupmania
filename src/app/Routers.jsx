@@ -4,6 +4,7 @@ import LoginPage from '@/pages/LoginPage';
 import RegisterPage from '@/pages/RegisterPage';
 import ProfilePage from "@/pages/ProfilePage.jsx";
 import IdeasPage from "@/pages/IdeasPage.jsx";
+import UserPage from '../pages/UserPage';
 
 const Routers = () => {
     return (
@@ -13,6 +14,7 @@ const Routers = () => {
             <Route path="/ideas" element={<IdeasPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/profile/:id" element={<UserPage />} />
         </Routes>
     );
 }
