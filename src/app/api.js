@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 // Базовый URL для всех запросов
 axios.defaults.baseURL = 'http://217.151.230.35:888/api/v1/';
@@ -14,7 +15,6 @@ const setAuthToken = (token) => {
 
 export const unAuthNav = () => {
     localStorage.removeItem('access_token', 'id');
-    navigate(`/login`)
 }
 
 export const loginUserData = (userData) => {
