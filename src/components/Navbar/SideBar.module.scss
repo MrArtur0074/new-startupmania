@@ -40,4 +40,13 @@
     .bottom_icon{width:35px;height:35px;}
     .bottombar_container{border-radius:0;border:0;border-top:1px solid #fff;}
     .topbar{border-radius:0;}
+    .hub_title{font-size:18px;}
+    .hub_links{padding:10px 0;box-sizing:content-box;}
+    .hub_link{width:56.5px;padding:5px 0;height:85px;>p{font-size:15px;-webkit-text-stroke:0.4px;};border-radius:14px;}
+    .hub_link_img{width:48.5px;height:48.5px;padding:3px 0;}
+    .hub_event{font-size:15px;}
+}
+@media screen and (max-width:375px) {
+    .hub_link{width:36.5px;height:65px;>p{font-size:12px;}}
+    .hub_link_img{width:34.5px;height:34.5px;padding:2px 0;}
 }

@@ -33,25 +33,25 @@ const Bottombar = () => {
                     <div className={styles.hub_title}>Hub</div>
                     <ul className={styles.hub_links}>
                         <li className={styles.hub_link}>
-                            <Link href='/friends'>
+                            <Link to='/friends'>
                                 <img className={styles.hub_link_img} src="../src/assets/icons/friends.svg" alt="" />
                             </Link>
                             <p>Друзья</p>
                         </li>
                         <li className={styles.hub_link}>
-                            <Link href='/teams'>
+                            <Link to='/teams'>
                                 <img className={styles.hub_link_img} src="../src/assets/icons/teams.svg" alt="" />
                             </Link>
                             <p>Команды</p>
                         </li>
                         <li className={styles.hub_link}>
-                            <Link href='/participants'>
+                            <Link to='/participants'>
                                 <img className={styles.hub_link_img} src="../src/assets/icons/participants.svg" alt="" />
                             </Link>
                             <p style={{ whiteSpace: 'pre-line' }}>Список Участников</p>
                         </li>
                         <li className={styles.hub_link}>
-                            <Link href='/about_us'>
+                            <Link to='/about_us'>
                                 <img className={styles.hub_link_img} src="../src/assets/icons/about.svg" alt="" />
                             </Link>
                             <p>О Нас</p>
@@ -67,7 +67,7 @@ const Bottombar = () => {
                             <ul className={styles.hub_teams_list}>
                                 {user.teams.map((team, id) => (
                                     <li className={styles.hub_link}>
-                                        <Link href={`/team/${id}`}>
+                                        <Link to={`/team/${id}`}>
                                             <img className={styles.hub_link_img} src={team.team_logo} alt="" />
                                         </Link>
                                         <p>{team.name}</p>
@@ -106,16 +106,16 @@ const Bottombar = () => {
                 </div>
             </div>
             <div className={styles.bottombar_container}>
-                <Link href="/ideas">
+                <Link to="/ideas">
                     <img className={styles.bottom_icon} src="../src/assets/icons/ideas.svg" alt="" />
                 </Link>
-                <Link href="/search">
+                <Link to="/search">
                     <img className={styles.bottom_icon} src="../src/assets/icons/bottomsearch.svg" alt="" />
                 </Link>
-                <Link href="/">
+                <Link to="/">
                     <img className={styles.bottom_icon} src="../src/assets/icons/event.svg" alt="" />
                 </Link>
-                <Link href="/notifications">
+                <Link to="/notifications">
                     <img className={styles.bottom_icon} src="../src/assets/icons/notification.svg" alt="" />
                 </Link>
                 <img onClick={hub_toggle} className={styles.bottom_icon} src="../src/assets/icons/hub.svg" alt="" />
