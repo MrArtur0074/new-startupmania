@@ -12,6 +12,11 @@ const setAuthToken = (token) => {
     }
 };
 
+export const unAuthNav = () => {
+    localStorage.removeItem('access_token', 'id');
+    navigate(`/login`)
+}
+
 export const loginUserData = (userData) => {
     return axios.post('/regauth/login/', userData);
 };
@@ -21,17 +26,21 @@ export const getUser = (token) => {
     return axios.get(`/regauth/user-info/`);
 };
 
-export const getAllIdeas = () => {
-    const access_token = localStorage.getItem('access_token')
-    return axios.get('/idea/all-ideas/', {
-        headers: {'Authorization': `Bearer ${access_token}`}
-      })
+export const getAllIdeas = (token) => {
+    setAuthToken(token)
+    return axios.get('/idea/all-ideas/')
 };
+
+export const createIdea = (token, formData) => {
+    setAuthToken(token)
+    return axios.post('/idea/create/', formData)
+}
 
 
 export default {
     loginUserData,
     getUser,
-    getAllIdeas
-    // Добавить другие функции сюда при необходимости
+    getAllIdeas,
+    unAuthNav,
+    createIdea
 };

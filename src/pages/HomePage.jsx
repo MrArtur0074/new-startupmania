@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import DefaultTemplate from "@/components/DefaultTemplate.jsx";
 import styles from "@/pages/HomePage.module.css";
 import "@fontsource/exo-2/900.css";
+import { DateContext } from '../App';
 
 const HomePage = () => {
-    const [date, setDate] = React.useState(new Date('2024-03-10T00:00:00'));
+    const [date, setDate] = useContext(DateContext)
     const [days, setDays] = React.useState(0);
     const [hours, setHours] = React.useState(0);
     const [minutes, setMinutes] = React.useState(0);

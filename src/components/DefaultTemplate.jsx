@@ -1,5 +1,6 @@
 import React from 'react';
 import SideBar from './Navbar/SideBar';
+import Bottombar from './Navbar/Bottombar';
 
 const DefaultTemplate = ({children}) => {
     return (
@@ -7,6 +8,7 @@ const DefaultTemplate = ({children}) => {
             <main>
                 {children}
                 <SideBar/>
+                <Bottombar/>
             </main>
         </>
     );

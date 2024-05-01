@@ -2,13 +2,15 @@ import DefaultTemplate from "@/components/DefaultTemplate.jsx";
 import "../pages/ProfilePage.scss";
 import { useEffect, useState } from 'react'
 import axios from 'axios';
-import { useParams } from 'react-router-dom'
+import { useParams ,useNavigate} from 'react-router-dom'
 
 export default function UserPage() {
   const params = useParams()
+  const navigate = useNavigate()
   const [user, setUser] = useState(false);
   const [showContainer1, setShowContainer1] = useState(true);
   const [showContainer2, setShowContainer2] = useState(false);
+  const [userRegistr, setUserRegistr] = useState("");
   const toggleContainer1 = () => {
     setShowContainer1(true);
     setShowContainer2(false);
@@ -17,6 +19,8 @@ export default function UserPage() {
     setShowContainer1(false);
     setShowContainer2(true);
   };
+
+
   useEffect(() => {
     const getUser = async () => {
       const access_token = localStorage.getItem('access_token');
@@ -33,6 +37,7 @@ export default function UserPage() {
             navigate(`/login?error=${encodeURIComponent('auth')}`)
           } else {
             setUser(response.data)
+            console.log(response.data)
           }
         } catch (e) {
           console.log(e);
@@ -41,6 +46,19 @@ export default function UserPage() {
     }
     getUser();
   }, [])
+
+  useEffect(() => {
+    if (user.created_at) {
+      // Remove the trailing 'Z' indicating UTC timezone
+      const trimmedTimestamp = user.created_at.slice(0, -1);
+      // Convert timestamp to a Date object
+      const dateObject = new Date(trimmedTimestamp);
+      // Format the date as per requirement (example format: MM/DD/YYYY)
+      const formattedDate = `${dateObject.getMonth() + 1}/${dateObject.getDate()}/${dateObject.getFullYear()}`;
+      // Update state with the formatted date
+      setUserRegistr(formattedDate);
+    }
+  }, [user]);
 
   return (
     <>
@@ -83,8 +101,7 @@ export default function UserPage() {
                   <h1 className='data_header'>Данные</h1>
                   <p className='data'>
                     <img src="../src/assets/icons/calendar.svg" width={36} height={36} alt="" />
-                    Зарегистрирован с
-                    {user.created_at}
+                    Зарегистрирован с {userRegistr}
                   </p>
                   <p className='data'>
                     <img src="../src/assets/icons/mail.svg" width={39} height={32} alt="" />
@@ -131,7 +148,7 @@ export default function UserPage() {
               <div className="ideas_container">
                 {user?.ideas?.map((idea, id) => (
                   <div key={id} className="idea_block">
-                    <div className="idea">
+                    <div className="idea" >
                       <h3 className='idea_name'>{idea.name}</h3>
                       <p className='idea_description'>{idea.description}</p>
                       <ul className='idea_tags'>
@@ -140,12 +157,12 @@ export default function UserPage() {
                     </div>
                     <div className="idea_interactables">
                       <div className="idea_interactable" style={{ color: '#934AF7' }}>
-                        <img width={40} height={34} src="../src/assets/icons/follow.svg" alt="" />
-                        {idea.supporters}
+                        <img width={40} height={34} src="../src/assets/icons/supported.svg" alt="" />
+                        {idea.supporters_count}
                       </div>
                       <div className="idea_interactable"
                         style={{ color: '#DD403F' }}>
-                        <img width={40} height={34} src="../src/assets/icons/like.svg" alt="" />
+                        <img width={40} height={34} src="../src/assets/icons/liked.svg" alt="" />
                         {idea.likes}
                       </div>
                     </div>

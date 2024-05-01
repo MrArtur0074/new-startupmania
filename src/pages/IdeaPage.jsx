@@ -2,11 +2,10 @@ import { useContext, useEffect, useState } from 'react';
 import DefaultTemplate from "@/components/DefaultTemplate.jsx";
 import "../pages/IdeasPage.scss";
 import filter from "@/assets/icons/filter.svg";
-import { getAllIdeas , unAuthNav} from "@/app/api.js";
+import { getAllIdeas } from "@/app/api.js";
 import { UserContext } from "@/App.jsx";
 import Idea from "@/components/ideas/Idea.jsx";
 import axios from 'axios';
-import { createIdea } from '../app/api';
 
 function IdeasPage() {
     const [user, setUser] = useContext(UserContext);
@@ -43,7 +42,9 @@ function IdeasPage() {
             navigate('/login');
         } else {
             try {
-                const response = createIdea(access_token,formData)
+                const response = await axios.post('/idea/create/', formData, {
+                    headers: { 'Authorization': `Bearer ${access_token}` }
+                });
                 if (response.data.code) {
                     unAuthNav()
                 } else {
@@ -56,6 +57,11 @@ function IdeasPage() {
             }
         }
     };
+    const unAuthNav = () => {
+        localStorage.removeItem('access_token', 'id');
+        setError('"Ваша сессия истекла. Пожалуйста, войдите снова, чтобы продолжить пользоваться нашими услугами.');
+        navigate(`/login?error=${encodeURIComponent('auth')}`)
+    }
     const showCreate = () => {
         { create ? setCreate(false) : setCreate(true) }
     }
@@ -79,7 +85,7 @@ function IdeasPage() {
         }
     }, [ideas, searchQuery]);
     useEffect(() => {
-        getAllIdeas(access_token).then((response) => {
+        getAllIdeas().then((response) => {
             console.log(response.data)
             setIdeas(response.data);
             setFilteredIdeas(response.data);
@@ -110,42 +116,6 @@ function IdeasPage() {
                                 </div>
                             </div>
                             <div className='nature'><img src="../src/assets/AuthAssets/authbackground.svg" alt="" /></div>
-                        </div>
-                    </div>
-                    <div className="create_idea_background" style={{ display: create ? 'block' : 'none' }}></div>
-                    <div className="create_idea_container" style={{ display: create ? 'flex' : 'none' }}>
-                        <form className='create_idea_form' style={{ display: createMessage ? 'none' : 'flex' }} onSubmit={handleSubmit}>
-                            <div style={{ position: 'absolute', top: '15px', right: '15px', width: '30px', height: '30px' }} onClick={showCreate}>
-                                <img src="../src/assets/icons/cross-fucking-normal.svg" style={{width:'100%',height:'100%'}} alt="" />
-                            </div>
-                            <input type="text"
-                                value={formData.name} name='name' onChange={handleNameChange}
-                                placeholder='Название Идеи' className='idea_name_create' />
-                            <div className='character_limit'>{maxNameLength - formData.name.length}/{maxNameLength}</div>
-                            <textarea type="text"
-                                value={formData.description} name='description' onChange={handleDescChange}
-                                placeholder='Описание Идеи' className='idea_desc_create' />
-                            <div className='character_limit'>{maxDescLength - formData.description.length}/{maxDescLength}</div>
-                            <button type='submit'>Создать Идею</button>
-                        </form>
-                    </div>
-                    <div className='ideas_header'>
-                        <h1 className='ideas_title'>Идеи</h1>
-                        <div className="search_container">
-                            <button className='create_idea_button' onClick={showCreate}>Создать Идею</button>
-                            <input className='ideas_search'
-                                type="text"
-                                placeholder="Поиск..."
-                                value={searchQuery}
-                                onChange={e => setSearchQuery(e.target.value)}
-                            />
-                        </div>
-                        <div id="filter_container">
-                            <div onClick={() => setTab('all')} className={`tab_filter ${tab === 'all' ? 'active_tab' : ''}`}>Все идеи</div>
-                            <div onClick={() => setTab('my')} className={`tab_filter  ${tab === 'my' ? 'active_tab' : ''}`}>Мои идеи</div>
-                            <div className='option'>
-                                <img src={filter} />
-                            </div>
                         </div>
                     </div>
                     <div className='ideas_container' id='ideas_container'>
