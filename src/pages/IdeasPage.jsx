@@ -2,10 +2,9 @@ import { useContext, useEffect, useState } from 'react';
 import DefaultTemplate from "@/components/DefaultTemplate.jsx";
 import "../pages/IdeasPage.scss";
 import filter from "@/assets/icons/filter.svg";
-import { getAllIdeas , unAuthNav} from "@/app/api.js";
+import { getAllIdeas, unAuthNav } from "@/app/api.js";
 import { UserContext } from "@/App.jsx";
 import Idea from "@/components/ideas/Idea.jsx";
-import axios from 'axios';
 import { createIdea } from '../app/api';
 
 function IdeasPage() {
@@ -15,10 +14,12 @@ function IdeasPage() {
     const [create, setCreate] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredIdeas, setFilteredIdeas] = useState([]);
-    const [createMessage, setCreateMessage] = useState(false)
+    const [createMessage, setCreateMessage] = useState(false); const [selectedTag, setSelectedTag] = useState('');
+    const [tagsArray, setTagsArray] = useState([]);
+    const [filterShow, setFilterShow] = useState()
     const maxDescLength = 300;
     const maxNameLength = 30;
-
+    const maxTagLength = 25;
     const handleDescChange = (e) => {
         const inputText = e.target.value;
         if (inputText.length <= maxDescLength) {
@@ -31,11 +32,18 @@ function IdeasPage() {
             handleChange(e)
         }
     };
+    const handleTagChange = (e) => {
+        const inputText = e.target.value;
+        if (inputText.length <= maxTagLength) {
+            handleChange(e)
+        }
+    };
     const access_token = localStorage.getItem('access_token');
     const handleChange = (e) => { setFormData({ ...formData, [e.target.name]: e.target.value }); };
     const [formData, setFormData] = useState({
         name: '',
         description: '',
+        tag: ''
     });
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -43,7 +51,7 @@ function IdeasPage() {
             navigate('/login');
         } else {
             try {
-                const response = createIdea(access_token,formData)
+                const response = createIdea(access_token, formData)
                 if (response.data.code) {
                     unAuthNav()
                 } else {
@@ -59,11 +67,19 @@ function IdeasPage() {
     const showCreate = () => {
         { create ? setCreate(false) : setCreate(true) }
     }
+    const showFilter = () => {
+        { filterShow ? setFilterShow(false) : setFilterShow(true) }
+    }
     const viewIdeas = filteredIdeas.map((ideaBlock, index) => {
         return (
             <Idea key={index} idea={ideaBlock} />
         );
     });
+    useEffect(() => {
+        const ideasWithTag = ideas.filter(idea => idea.tag.trim() !== '');
+        const newTagsArray = ideasWithTag.map(idea => idea.tag);
+        setTagsArray(newTagsArray);
+    }, [ideas]);
     useEffect(() => {
         filterIdeas();
     }, [tab]);
@@ -78,6 +94,18 @@ function IdeasPage() {
             );
         }
     }, [ideas, searchQuery]);
+    useEffect(() => {
+        if (selectedTag.trim() === '') {
+            setFilteredIdeas(ideas);
+        } else {
+            setFilteredIdeas(
+                ideas.filter(ideaBlock => ideaBlock.tag === selectedTag)
+            );
+        }
+    }, [ideas, selectedTag]);
+    const handleTagClick = (tag) => {
+        setSelectedTag(tag);
+    };
     useEffect(() => {
         getAllIdeas(access_token).then((response) => {
             console.log(response.data)
@@ -116,7 +144,7 @@ function IdeasPage() {
                     <div className="create_idea_container" style={{ display: create ? 'flex' : 'none' }}>
                         <form className='create_idea_form' style={{ display: createMessage ? 'none' : 'flex' }} onSubmit={handleSubmit}>
                             <div style={{ position: 'absolute', top: '15px', right: '15px', width: '30px', height: '30px' }} onClick={showCreate}>
-                                <img src="../src/assets/icons/cross-fucking-normal.svg" style={{width:'100%',height:'100%'}} alt="" />
+                                <img src="../src/assets/icons/cross-fucking-normal.svg" style={{ width: '100%', height: '100%' }} alt="" />
                             </div>
                             <input type="text"
                                 value={formData.name} name='name' onChange={handleNameChange}
@@ -126,8 +154,20 @@ function IdeasPage() {
                                 value={formData.description} name='description' onChange={handleDescChange}
                                 placeholder='Описание Идеи' className='idea_desc_create' />
                             <div className='character_limit'>{maxDescLength - formData.description.length}/{maxDescLength}</div>
+                            <input type="text"
+                                value={formData.tag} name='tag' onChange={handleTagChange}
+                                placeholder='Тег' className='idea_tag_create' />
+                            <div className='character_limit'>{maxTagLength - formData.tag.length}/{maxTagLength}</div>
                             <button type='submit'>Создать Идею</button>
                         </form>
+                    </div>
+                    <div className='filter_window' style={{ display: filterShow ? 'flex' : 'none' }}>
+                        <div onClick={() => setSelectedTag('')}>CLEAR</div>
+                        {tagsArray.map((tag, index) => (
+                            <p key={index} onClick={() => handleTagClick(tag)}>
+                                {tag}
+                            </p>
+                        ))}
                     </div>
                     <div className='ideas_header'>
                         <h1 className='ideas_title'>Идеи</h1>
@@ -143,7 +183,14 @@ function IdeasPage() {
                         <div id="filter_container">
                             <div onClick={() => setTab('all')} className={`tab_filter ${tab === 'all' ? 'active_tab' : ''}`}>Все идеи</div>
                             <div onClick={() => setTab('my')} className={`tab_filter  ${tab === 'my' ? 'active_tab' : ''}`}>Мои идеи</div>
-                            <div className='option'>
+                            <input
+                                type="text"
+                                value={selectedTag}
+                                placeholder='Тег'
+                                className='selected_tag'
+                                readOnly
+                            />
+                            <div className='option' onClick={showFilter}>
                                 <img src={filter} />
                             </div>
                         </div>
@@ -156,5 +203,4 @@ function IdeasPage() {
         </>
     );
 }
-
 export default IdeasPage;
