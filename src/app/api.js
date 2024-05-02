@@ -31,6 +31,16 @@ export const getAllIdeas = (token) => {
     return axios.get('/idea/all-ideas/')
 };
 
+export const getThisIdea = (token,id) => {
+    setAuthToken(token)
+    return axios.get(`/idea/get-idea/${id}`)
+};
+
+export const getThisUser = (token,id) => {
+    setAuthToken(token)
+    return axios.get(`/regauth/user-search/${id}`)
+};
+
 export const createIdea = (token, formData) => {
     setAuthToken(token)
     return axios.post('/idea/create/', formData)
@@ -42,5 +52,7 @@ export default {
     getUser,
     getAllIdeas,
     unAuthNav,
-    createIdea
+    createIdea,
+    getThisIdea,
+    getThisUser,
 };

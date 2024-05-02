@@ -1,8 +1,8 @@
 import DefaultTemplate from "@/components/DefaultTemplate.jsx";
 import "../pages/ProfilePage.scss";
 import { useEffect, useState } from 'react'
-import axios from 'axios';
-import { useParams ,useNavigate} from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
+import { getThisUser, unAuthNav } from "../app/api";
 
 export default function UserPage() {
   const params = useParams()
@@ -24,24 +24,15 @@ export default function UserPage() {
   useEffect(() => {
     const getUser = async () => {
       const access_token = localStorage.getItem('access_token');
-      if (!access_token) {
-        navigate('/login');
+      if (access_token) {
+        getThisUser(access_token, params.id).then((response) => {
+          setUser(response.data)
+        }).catch((error) => {
+          console.log(error)
+        })
       } else {
-        try {
-          const response = await axios.get(`/regauth/user-search/${params.id}`, {
-            headers: { 'Authorization': `Bearer ${access_token}` }
-          });
-          if (response.data.code) {
-            localStorage.clear();
-            setError('"Ваша сессия истекла. Пожалуйста, войдите снова, чтобы продолжить пользоваться нашими услугами.');
-            navigate(`/login?error=${encodeURIComponent('auth')}`)
-          } else {
-            setUser(response.data)
-            console.log(response.data)
-          }
-        } catch (e) {
-          console.log(e);
-        }
+        navigate('/login');
+        unAuthNav()
       }
     }
     getUser();

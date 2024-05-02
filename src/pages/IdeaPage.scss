@@ -1,0 +1,4 @@
+#idea_page{background-color:#B3DAF6;width:100%;height:100vh;display:flex;flex-direction:column;padding-top:50px;gap:50px;align-items:center;}
+.idea_page_title{z-index:3;font-family:'Exo 2';font-size:32px;width:800px;height:130px;display:flex;flex-direction:row;justify-content:space-between;align-items:center;}
+.idea_creator{height:100%;display:flex;flex-direction:column;width:fit-content;align-items:center;}
+.idea_creator_avatar{z-index:3;border:solid 2px;border-radius:50%;flex:1;background-color:orange;}

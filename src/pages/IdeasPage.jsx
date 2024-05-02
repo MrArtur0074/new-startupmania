@@ -108,7 +108,6 @@ function IdeasPage() {
     };
     useEffect(() => {
         getAllIdeas(access_token).then((response) => {
-            console.log(response.data)
             setIdeas(response.data);
             setFilteredIdeas(response.data);
         }).catch((error) => {

@@ -14,7 +14,6 @@ function App() {
             getUser(access)
                 .then(response => {
                     setUser(response.data);
-                    console.log(response.data)
                 })
                 .catch(error => {
                     console.error('Ошибка:', error.message);

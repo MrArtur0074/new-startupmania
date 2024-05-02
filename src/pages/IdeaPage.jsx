@@ -1,109 +1,46 @@
 import { useContext, useEffect, useState } from 'react';
 import DefaultTemplate from "@/components/DefaultTemplate.jsx";
-import "../pages/IdeasPage.scss";
-import filter from "@/assets/icons/filter.svg";
-import { getAllIdeas } from "@/app/api.js";
 import { UserContext } from "@/App.jsx";
-import Idea from "@/components/ideas/Idea.jsx";
-import axios from 'axios';
+import './IdeaPage.scss'
+import { useParams } from 'react-router-dom';
+import { getThisIdea, getThisUser } from '../app/api';
+import creatorImageNull from '../../src/assets/icons/user.svg'
 
 function IdeasPage() {
+    const params = useParams()
+    const [mainIdea, setMainIdea] = useState([])
     const [user, setUser] = useContext(UserContext);
-    const [tab, setTab] = useState('all');
-    const [ideas, setIdeas] = useState([]);
-    const [create, setCreate] = useState(false);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [filteredIdeas, setFilteredIdeas] = useState([]);
-    const [createMessage, setCreateMessage] = useState(false)
-    const maxDescLength = 300;
-    const maxNameLength = 30;
-
-    const handleDescChange = (e) => {
-        const inputText = e.target.value;
-        if (inputText.length <= maxDescLength) {
-            handleChange(e)
-        }
-    };
-    const handleNameChange = (e) => {
-        const inputText = e.target.value;
-        if (inputText.length <= maxNameLength) {
-            handleChange(e)
-        }
-    };
-    const access_token = localStorage.getItem('access_token');
-    const handleChange = (e) => { setFormData({ ...formData, [e.target.name]: e.target.value }); };
-    const [formData, setFormData] = useState({
-        name: '',
-        description: '',
-    });
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!access_token) {
-            navigate('/login');
-        } else {
-            try {
-                const response = await axios.post('/idea/create/', formData, {
-                    headers: { 'Authorization': `Bearer ${access_token}` }
+    const [creatorProfile, setCreatorProfile] = useState('');
+    const [creatorName, setCreatorName] = useState('')
+    const access_token = localStorage.getItem('access_token')
+    const [isCreatorSet, setIsCreatorSet] = useState(false);
+    useEffect(() => {
+        getThisIdea(access_token, params.id).then((response) => {
+            setMainIdea(response.data)
+            if (response?.data?.created_by) {
+                getThisUser(access_token, response.data.created_by).then((response) => {
+                    setCreatorProfile(response.data.avatar);
+                    setCreatorName(response.data.name)
+                    setIsCreatorSet(true)
+                }).catch((error) => {
+                    console.log(error);
                 });
-                if (response.data.code) {
-                    unAuthNav()
-                } else {
-                    setCreateMessage(true)
-                    setFormData(prevFormData => ({ ...prevFormData, name: '', description: '' }));
-                    setTimeout(setCreateMessage(false), 5000);
-                }
-            } catch (e) {
-                console.log(e);
+            } else {
+                setCreatorProfile(null)
+                setIsCreatorSet(true)
+                setCreatorName('')
             }
-        }
-    };
-    const unAuthNav = () => {
-        localStorage.removeItem('access_token', 'id');
-        setError('"Ваша сессия истекла. Пожалуйста, войдите снова, чтобы продолжить пользоваться нашими услугами.');
-        navigate(`/login?error=${encodeURIComponent('auth')}`)
-    }
-    const showCreate = () => {
-        { create ? setCreate(false) : setCreate(true) }
-    }
-    const viewIdeas = filteredIdeas.map((ideaBlock, index) => {
-        return (
-            <Idea key={index} idea={ideaBlock} />
-        );
-    });
-    useEffect(() => {
-        filterIdeas();
-    }, [tab]);
-    useEffect(() => {
-        if (searchQuery.trim() === '') {
-            setFilteredIdeas(ideas);
-        } else {
-            setFilteredIdeas(
-                ideas.filter(ideaBlock =>
-                    ideaBlock.name.toLowerCase().includes(searchQuery.toLowerCase())
-                )
-            );
-        }
-    }, [ideas, searchQuery]);
-    useEffect(() => {
-        getAllIdeas().then((response) => {
-            console.log(response.data)
-            setIdeas(response.data);
-            setFilteredIdeas(response.data);
         }).catch((error) => {
-            console.log(error);
-        });
+            console.log(error)
+        })
     }, [])
-    function filterIdeas() {
-        if (tab === 'all') {
-            setFilteredIdeas(ideas);
-        } else if (tab === 'my') {
-            setFilteredIdeas(ideas.filter((idea) => user.id === idea.created_by));
-        }
-    }
+
+    // проблемы здесь в этом файле, он слишком долго меняет переменные mainIdea,creatorName,creatorProfile из-за чего я не могу своевременно поставить их на сайт или использовать
+
     return (
         <>
             <DefaultTemplate>
-                <div className='ideas'>
+                <div id='idea_page'>
                     <div id="background_container">
                         <div className="background">
                             <div className='sky'><img src="../src/assets/background/sky.svg" alt="" /></div>
@@ -118,9 +55,17 @@ function IdeasPage() {
                             <div className='nature'><img src="../src/assets/AuthAssets/authbackground.svg" alt="" /></div>
                         </div>
                     </div>
-                    <div className='ideas_container' id='ideas_container'>
-                        {viewIdeas}
-                    </div>
+                    <h1 className='idea_page_title'>
+                        <div className='idea_creator'>
+                            {!!creatorName && (
+                                <>
+                                    <img src={creatorProfile ? creatorProfile : creatorImageNull} className='idea_creator_avatar' alt="" />
+                                    <p>{creatorName}</p>
+                                </>
+                            )}
+                        </div>
+                        {mainIdea.name}
+                    </h1>
                 </div>
             </DefaultTemplate>
         </>
