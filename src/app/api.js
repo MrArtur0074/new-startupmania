@@ -31,7 +31,17 @@ export const getAllIdeas = (token) => {
     return axios.get('/idea/all-ideas/')
 };
 
-export const getThisIdea = (token,id) => {
+export const getAllTeams = (token) => {
+    setAuthToken(token)
+    return axios.get('/team/all-teams/')
+};
+
+export const getAllUsers = (token) => {
+    setAuthToken(token)
+    return axios.get(`/regauth/user-list`)
+}
+
+export const getThisIdea = async (token,id) => {
     setAuthToken(token)
     return axios.get(`/idea/get-idea/${id}`)
 };
@@ -46,13 +56,45 @@ export const createIdea = (token, formData) => {
     return axios.post('/idea/create/', formData)
 }
 
+export const createTeam = (token, formData) => {
+    setAuthToken(token)
+    return axios.post('/team/create-team/', formData)
+}
+
+export const handleLikeIdeaFunc = async (token,id) => {
+    setAuthToken(token)
+    return axios.post(`/idea/ideas/${id}/like/`)
+};
+
+export const handleDislikeIdeaFunc = async (token,id) => {
+    setAuthToken(token)
+    return axios.post(`/idea/ideas/${id}/delite-like/`)
+};
+
+export const handleSupportIdeaFunc = async (token,id) => {
+    setAuthToken(token)
+    return axios.post(`/idea/ideas/${id}/supporter/`)
+};
+
+export const handleStopSupportIdeaFunc = async (token,id) => {
+    setAuthToken(token)
+    return axios.post(`/idea/ideas/${id}/supporter-decline/`)
+};
+
 
 export default {
     loginUserData,
     getUser,
     getAllIdeas,
+    getAllTeams,
+    getAllUsers,
     unAuthNav,
     createIdea,
+    createTeam,
     getThisIdea,
     getThisUser,
+    handleLikeIdeaFunc,
+    handleDislikeIdeaFunc,
+    handleSupportIdeaFunc,
+    handleStopSupportIdeaFunc,
 };

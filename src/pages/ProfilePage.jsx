@@ -1,14 +1,14 @@
-import React, { useContext } from 'react';
 import DefaultTemplate from "@/components/DefaultTemplate.jsx";
 import "../pages/ProfilePage.scss";
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { UserContext } from "@/App.jsx";
-import axios from 'axios';
+import { unAuthNav, getThisUser } from '../app/api';
 
 function ProfilePage() {
     const [user, setUser] = useContext(UserContext);
     const [showContainer1, setShowContainer1] = useState(true);
     const [showContainer2, setShowContainer2] = useState(false);
+    const [userRegistr, setUserRegistr] = useState("");
     const toggleContainer1 = () => {
         setShowContainer1(true);
         setShowContainer2(false);
@@ -20,27 +20,33 @@ function ProfilePage() {
     useEffect(() => {
         const getUser = async () => {
             const access_token = localStorage.getItem('access_token');
-            if (!access_token) {
-                navigate('/login');
+            const user_id = localStorage.getItem('user_id')
+            if (access_token) {
+                getThisUser(access_token, user_id).then((response) => {
+                    setUser(response.data)
+                }).catch((error) => {
+                    console.log(error)
+                })
             } else {
-                try {
-                    const response = await axios.get('/regauth/user-info/', {
-                        headers: { 'Authorization': `Bearer ${access_token}` }
-                    });
-                    if (response.data.code) {
-                        localStorage.clear();
-                        setError('"Ваша сессия истекла. Пожалуйста, войдите снова, чтобы продолжить пользоваться нашими услугами.');
-                        navigate(`/login?error=${encodeURIComponent('auth')}`)
-                    } else {
-                        setUser(response.data)
-                    }
-                } catch (e) {
-                    console.log(e);
-                }
+                navigate('/login');
+                unAuthNav()
             }
         }
         getUser();
     }, [])
+
+    useEffect(() => {
+        if (user.created_at) {
+            // Remove the trailing 'Z' indicating UTC timezone
+            const trimmedTimestamp = user.created_at.slice(0, -1);
+            // Convert timestamp to a Date object
+            const dateObject = new Date(trimmedTimestamp);
+            // Format the date as per requirement (example format: MM/DD/YYYY)
+            const formattedDate = `${dateObject.getMonth() + 1}/${dateObject.getDate()}/${dateObject.getFullYear()}`;
+            // Update state with the formatted date
+            setUserRegistr(formattedDate);
+        }
+    }, [user]);
 
     return (
         <>
@@ -84,8 +90,7 @@ function ProfilePage() {
                                     <h1 className='data_header'>Данные</h1>
                                     <p className='data'>
                                         <img src="../src/assets/icons/calendar.svg" width={36} height={36} alt="" />
-                                        Зарегистрирован с
-                                        {user.created_at}
+                                        Зарегистрирован с {userRegistr}
                                     </p>
                                     <p className='data'>
                                         <img src="../src/assets/icons/mail.svg" width={39} height={32} alt="" />

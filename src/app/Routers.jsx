@@ -6,6 +6,7 @@ import ProfilePage from "@/pages/ProfilePage.jsx";
 import IdeasPage from "@/pages/IdeasPage.jsx";
 import UserPage from '../pages/UserPage';
 import IdeaPage from '@/pages/IdeaPage.jsx'
+import TeamsPage from '../pages/TeamsPage';
 
 const Routers = () => {
     return (
@@ -18,6 +19,7 @@ const Routers = () => {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/profile/:id" element={<UserPage />} />
+            <Route path="/teams/" element={<TeamsPage />} />
         </Routes>
     );
 }

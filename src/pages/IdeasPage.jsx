@@ -77,7 +77,8 @@ function IdeasPage() {
     });
     useEffect(() => {
         const ideasWithTag = ideas.filter(idea => idea.tag.trim() !== '');
-        const newTagsArray = ideasWithTag.map(idea => idea.tag);
+        const newTagsSet = new Set(ideasWithTag.map(idea => idea.tag));
+        const newTagsArray = Array.from(newTagsSet);
         setTagsArray(newTagsArray);
     }, [ideas]);
     useEffect(() => {

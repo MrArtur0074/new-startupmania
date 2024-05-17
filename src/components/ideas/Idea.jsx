@@ -4,10 +4,10 @@ import supported from "@/assets/icons/supported.svg";
 import support_img from "@/assets/icons/support.svg";
 import view from "@/assets/icons/view.svg"
 import viewPressed from "@/assets/icons/view-pressed.svg"
-import axios from "axios";
 import { useEffect, useState } from "react";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { handleDislikeIdeaFunc, handleLikeIdeaFunc, handleStopSupportIdeaFunc, handleSupportIdeaFunc } from "../../app/api";
 function Idea(props) {
     const [like, setLike] = useState(null)
     const [support, setSupport] = useState(null)
@@ -24,7 +24,7 @@ function Idea(props) {
         setSupportCount(props?.idea.supporters_count)
         AOS.init({
             duration: 1000,
-            mirror:true,
+            mirror: true,
             once: true
         });
     }, [])
@@ -54,27 +54,21 @@ function Idea(props) {
     }
     const handleLikeIdea = async () => {
         try {
-            const response = await axios.post(`/idea/ideas/${props?.idea?.id}/like/`, {}, {
-                headers: { 'Authorization': `Bearer ${access_token}` }
-            }).then(res => {
-                setLikeCount(res?.data?.likes)
-                setProcess(false)
-                setLike(true)
-            });
+            const response = await handleLikeIdeaFunc(access_token, props?.idea?.id);
+            setLikeCount(response?.data?.likes);
+            setProcess(false);
+            setLike(true);
         } catch (error) {
             console.error('Не получилось сделать запрос', error);
-            setProcess(false)
+            setProcess(false);
         }
     };
     const handleDislikeIdea = async () => {
         try {
-            const response = await axios.post(`/idea/ideas/${props?.idea?.id}/delite-like/`, {}, {
-                headers: { 'Authorization': `Bearer ${access_token}` }
-            }).then(res => {
-                setLikeCount(res?.data?.likes)
-                setLike(false)
-                setProcess(false)
-            });
+            const response = await handleDislikeIdeaFunc(access_token, props?.idea?.id);
+            setLikeCount(response?.data?.likes);
+            setProcess(false);
+            setLike(false);
         } catch (error) {
             console.error('Не получилось сделать запрос', error);
             setProcess(false)
@@ -82,13 +76,10 @@ function Idea(props) {
     };
     const handleSupportIdea = async () => {
         try {
-            const response = await axios.post(`/idea/ideas/${props?.idea?.id}/supporter/`, {}, {
-                headers: { 'Authorization': `Bearer ${access_token}` }
-            }).then(res => {
-                setProcess(false)
-                setSupport(true)
-                setSupportCount(res?.data?.supporters_count)
-            });
+            const response = await handleSupportIdeaFunc(access_token, props?.idea?.id);
+            setSupportCount(response?.data?.supporters_count);
+            setProcess(false);
+            setSupport(true);
         } catch (error) {
             console.error('Не получилось сделать запрос', error);
             setProcess(false)
@@ -96,13 +87,10 @@ function Idea(props) {
     };
     const handleStopSupportIdea = async () => {
         try {
-            const response = await axios.post(`/idea/ideas/${props?.idea?.id}/supporter-decline/`, {}, {
-                headers: { 'Authorization': `Bearer ${access_token}` }
-            }).then(res => {
-                setProcess(false)
-                setSupport(false)
-                setSupportCount(res?.data?.supporters_count)
-            });
+            const response = await handleStopSupportIdeaFunc(access_token, props?.idea?.id);
+            setSupportCount(response?.data?.supporters_count);
+            setProcess(false);
+            setSupport(false);
         } catch (error) {
             console.error('Не получилось сделать запрос', error);
             setProcess(false)
