@@ -1,11 +1,56 @@
-.teams{background-color:#B3DAF6;width:100%;display:flex;flex-direction:column;align-items:center;padding-top:50px;gap:50px;}
-.teams_header{position:absolute;top:50px;left:250px;z-index:5;}
+.teams{background-color:#B3DAF6;width:100%;display:flex;flex-direction:column;align-items:center;padding-top:50px;gap:50px;box-sizing:border-box;min-height:100vh;}
+.teams_header{width:900px;z-index:3;display:flex;flex-direction:column;gap:10px;}
 .team_character_limit{width:100%;text-align:start;font-size:12px;color:#000;cursor:default;}
-.team_input_create{width:fit-content;max-width:100%;overflow:scroll;font-size:18px;text-align:start;color:#000;border:1px solid #000;padding:5px;border-radius:6px;font-size:16px;}
+.team_input_create{width:fit-content;max-width:100%;overflow:scroll;font-size:18px;text-align:start;color:#000;border:1px solid #000;padding:5px;border-radius:6px;font-size:16px;box-sizing:border-box;}
 .team_desc_create{resize:none;height:95px;width:100%;}
 .team_desc_create::-webkit-scrollbar{display:none;}
-.create_team_form{flex-direction:column;gap:8px;width:560px;font-family:"Bainsley",sans-serif;position:relative;}
+.create_team_form{flex-direction:column;gap:8px;width:560px;font-family:"Bainsley",sans-serif;position:relative;>button{align-self:center;border:1px solid #000;border-radius:50px;font-size:14px;font-family:'Unbounded',sans-serif;width:fit-content;padding:6px;background:rgba(255, 255, 255, 0.3);}>button:hover{background-color:#FBB800;}}
 .choose_idea{border-radius:36px;padding:3px 7px;border:1px solid;width:fit-content;background-color:#FBB800;cursor:pointer;}
 .modal{height:100px;overflow-y:scroll;width:100%;font-size:15px;font-weight:300;list-style-type:none;>li:hover{color:#934AF7;cursor:pointer;background-color:rgba($color: #B3DAF6, $alpha: 0.2);}}
 .modal::-webkit-scrollbar{display:none;}
 .choose_carrier{display:flex;width:100%;flex-direction:row;justify-content:space-between;}
+.create_team_container{position:fixed;align-self:center;top:25vh;flex-direction:column;align-items:center;justify-content:center;padding:20px;border:solid 1px #fff;border-radius:36px;background:rgba(255, 255, 255, 0.3);box-shadow:0 0 3px 20px rgba(255, 255, 255, 0.3);z-index:5;}
+.teams_title{font-size:3rem;font-family:"Exo 2";width:100%;text-align:center;}
+.create_team_button{border-radius:50px;padding:20px;font-size:20px;background-color:#FBB800;font-family:"Unbounded",sans-serif;}
+.teams_search{border-radius:50px;padding:20px;font-size:20px;background-color:rgba(255, 255, 255, 0.3);font-family:"Unbounded", sans-serif;backdrop-filter:blur(10px);border:1px solid #000;}
+.team_button_img{width:40px;height:40px;}
+.teams_container{box-sizing:border-box;display:flex;flex-direction:column;gap:10px;width:900px;}
+.team_block{display:flex;flex-direction:row;justify-content:start;align-items:center;width:100%;cursor:default;padding:30px;box-sizing:border-box;border:1px solid #000;border-radius:32px;backdrop-filter:blur(10px);background-color:rgba(255, 255, 255, 0.3);gap:20px;}
+.team_logo{height:100px;width:100px;border-radius:50px;border:1px solid #000;cursor:pointer;}
+.team{width:100%;display:flex;flex-direction:column;align-items:start;justify-content:space-around;}
+.team_name{font-size:26px;font-family:'Unbounded',sans-serif;}
+.team_idea{color:#934AF7;font-size:16px;font-family:'Montserrrat',sans-serif;display:flex;flex-wrap:wrap;cursor:pointer;}
+.team_name , .team_idea{word-wrap:break-word;word-break:break-all;overflow-wrap:break-word;}
+@media screen and (max-width:1000px) {
+    .teams_header{width:700px;}
+    .teams_container{width:700px;}
+    .create_team_button , .teams_search{font-size:17px;padding:14px;border:solid 1px;}
+    .team_name{font-size:24px;}
+    .team_idea{font-size:15px;}
+    .teams{padding:70px 0;}
+    .team_block{padding:25px;}
+}
+@media screen and (max-width:700px) {
+    .teams_header{width:425px;}
+    .teams_container{width:425px;}
+    .create_team_button , .teams_search{font-size:15px;padding:7px;border:solid 0.7px;}
+    .teams_title{font-size:2.5em;}
+    .team_name{font-size:22px;}
+    .team_idea{font-size:14px;}
+    .idea_button_img{width:25px;height:25px;}
+    .team_block{padding:10px;}
+}
+@media screen and (max-width:600px) {
+    .create_team_container{padding:10px;border-radius:0;top:100px;}
+    .create_team_form{width:300px;}
+    .modal{height:70px;}
+}
+@media screen and (max-width:425px) {
+    .teams_header{width:100%;}
+    .team_block{border-radius:10px;}
+    .teams_container{width:100%;}
+    .create_team_button , .teams_search{font-size:11px;padding:5px;border-radius:10px;}
+    .team_name{font-size:16px;}
+    .team_idea{font-size:13px;}
+    .teams_title{font-size:2em;}
+}

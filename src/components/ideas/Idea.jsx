@@ -101,7 +101,7 @@ function Idea(props) {
             <div className='idea'>
                 <h3 className='idea_name'>{props?.idea?.name}</h3>
                 <p className='idea_description'>{props?.idea?.description}</p>
-                <p className='idea_tag_prop idea_descrription'>{props?.idea?.tag}</p>
+                <p className='idea_tag_prop'>{props?.idea?.tag}</p>
             </div>
             <div className='idea_buttons'>
                 <div className='idea_block_button' onClick={handleLike} style={{ color: 'rgb(221, 64, 63)' }}>

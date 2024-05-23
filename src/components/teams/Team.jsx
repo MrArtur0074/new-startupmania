@@ -1,26 +1,17 @@
-import view from "@/assets/icons/view.svg"
-import viewPressed from "@/assets/icons/view-pressed.svg"
-import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-function Team (props) {
-    const [viewing, setViewing] = useState(null)
+function Team(props) {
     const access_token = localStorage.getItem('access_token');
-    const handleView = async () => {
-        setViewing(true)
-        setTimeout(() => {
-            setViewing(false)
-        }, 1000);
-    }
-    <div className='team_block' key={props.team?.id}>
+    const navigate=useNavigate()
+    return (
+        <div className='team_block' key={props.team?.id}>
+            <img onClick={()=>navigate(`/team/${props.team?.id}`)} className="team_logo" src="../../src/assets/icons/team_logo_none.svg" alt="" />
             <div className='team'>
                 <h3 className='team_name'>{props?.team?.name}</h3>
-                <p className='team_description'>{props?.team?.description}</p>
-                <p className='team_tag_prop team_descrription'>{props?.team?.tag}</p>
-            </div>
-            <div className='team_buttons'>
-                <a className='team_view' href={`/team/${props?.team?.id}`} onClick={handleView}><img className='team_button_img' src={viewing ? viewPressed : view} alt="<->" /></a>
+                <p onClick={()=>navigate(`/idea/${props.team?.ideaId}`)} className='team_idea'><p style={{color:'#242424'}}>Идея: </p>{props?.team?.idea}</p>
             </div>
         </div>
+    )
 }
 
 export default Team

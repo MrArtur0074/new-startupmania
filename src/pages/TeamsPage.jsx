@@ -1,7 +1,7 @@
 import DefaultTemplate from "@/components/DefaultTemplate.jsx";
 import { useEffect, useState, useContext } from "react";
 import { UserContext } from "@/App.jsx";
-import { createTeam, getAllTeams, getAllIdeas, getThisIdea, getAllUsers } from "../app/api";
+import { createTeam, getAllIdeas, getThisIdea, getAllUsers } from "../app/api";
 import Team from "@/components/teams/Team.jsx";
 import '../pages/TeamsPage.scss'
 const TeamsPage = () => {
@@ -9,18 +9,40 @@ const TeamsPage = () => {
     const [user, setUser] = useContext(UserContext);
     const [tab, setTab] = useState('all');
     const [create, setCreate] = useState(false);
-    const [teams, setTeams] = useState([])
-    const [filteredTeams, setFilteredTeams] = useState([])
+    const [teams, setTeams] = useState([
+        {
+            name: "Tech Innovators",
+            logo: null,
+            id: 1,
+            idea: "Smart Home Solutions",
+            ideaId: 101
+        },
+        {
+            name: "Eco Warriors",
+            logo: null,
+            id: 2,
+            idea: "Sustainable Energy",
+            ideaId: 102
+        },
+        {
+            name: "Health Guardians",
+            logo: null,
+            id: 3,
+            idea: "Telemedicine App",
+            ideaId: 103
+        }
+    ])
     const [searchQuery, setSearchQuery] = useState('');
     const [createMessage, setCreateMessage] = useState(false);
     const [showModal, setShowModal] = useState(false);
     const [showSupport, setShowSupport] = useState(false);
     const [supporters, setSupporters] = useState([]);
     const [ideas, setIdeas] = useState([])
-    const [ideaforsup,setideaforsup]=useState('')
-    const [ideafromback,setideafromback]=useState('')
+    const [ideaforsup, setideaforsup] = useState('')
+    const [ideafromback, setideafromback] = useState('')
     const [selectedIdea, setSelectedIdea] = useState('')
     const [selectedSupporters, setSelectedSupporters] = useState([]);
+    const [filteredTeams, setFilteredTeams] = useState([])
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -112,12 +134,13 @@ const TeamsPage = () => {
         );
     });
     useEffect(() => {
-        getAllTeams(access_token).then((response) => {
-            setTeams(response.data);
-            setFilteredTeams(response.data);
-        }).catch((error) => {
-            console.log(error);
-        });
+        // getAllTeams(access_token).then((response) => {
+        //     setTeams(response.data);
+        //     setFilteredTeams(response.data);
+        // }).catch((error) => {
+        //     console.log(error);
+        // });
+        setFilteredTeams(teams)
     }, [])
     useEffect(() => {
         if (searchQuery.trim() === '') {
@@ -134,9 +157,9 @@ const TeamsPage = () => {
     useEffect(() => {
         if (selectedIdea) {
             const response = getThisIdea(access_token, formData.idea)
-            if(response) {
-                setideafromback (response)
-                setideaforsup (ideafromback.data)   
+            if (response) {
+                setideafromback(response)
+                setideaforsup(ideafromback.data)
             }
             const fetchData = async () => {
                 try {
@@ -179,10 +202,10 @@ const TeamsPage = () => {
                         </div>
                     </div>
                     <div className="create_idea_background" style={{ display: create ? 'block' : 'none' }}></div>
-                    <div className="create_idea_container" style={{ display: create ? 'flex' : 'none' }}>
+                    <div className="create_team_container" style={{ display: create ? 'flex' : 'none' }}>
                         <form className='create_team_form' style={{ display: createMessage ? 'none' : 'flex' }} onSubmit={handleSubmit}>
                             <div style={{ position: 'absolute', top: '15px', right: '15px', width: '30px', height: '30px' }} onClick={showCreate}>
-                                <img src="../src/assets/icons/cross-fucking-normal.svg" style={{ width: '100%', height: '100%' }} alt="" />
+                                <img src="../src/assets/icons/cross-regular.svg" style={{ width: '100%', height: '100%' }} alt="" />
                             </div>
                             <input type="text"
                                 value={formData.name} name='name' onChange={handleNameChange}
@@ -203,7 +226,6 @@ const TeamsPage = () => {
                                     {showSupport && !showModal ? 'Закрыть' : 'Выбрать Участников'}
                                 </div>
                             </div>
-                            <div><p onClick={()=>console.log(ideaforsup)}>ideaforsup</p><p onClick={()=>console.log(ideafromback)}>ideafromback</p></div>
                             {showModal && (
                                 <ul className="modal team_input_create">
                                     {ideas.map(idea => (
@@ -226,13 +248,11 @@ const TeamsPage = () => {
                         </form>
                     </div>
                     <div className="teams_header">
-                        <input className='ideas_search'
-                            type="text"
-                            placeholder="Поиск..."
-                            value={searchQuery}
-                            onChange={e => setSearchQuery(e.target.value)}
-                        />
-                        <button className='create_idea_button' onClick={showCreate} >Создать Команду</button>
+                        <h1 className="teams_title">Команды</h1>
+                        <div className="search_container">
+                            <button className='create_team_button' onClick={showCreate} >Создать Команду</button>
+                            <input className='teams_search' type="text" placeholder="Поиск..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
+                        </div>
                     </div>
                     <div className="teams_container">
                         {viewTeams}
