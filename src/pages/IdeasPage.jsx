@@ -6,7 +6,6 @@ import { getAllIdeas, unAuthNav } from "@/app/api.js";
 import { UserContext } from "@/App.jsx";
 import Idea from "@/components/ideas/Idea.jsx";
 import { createIdea } from '../app/api';
-
 function IdeasPage() {
     const [user, setUser] = useContext(UserContext);
     const [tab, setTab] = useState('all');
@@ -17,6 +16,12 @@ function IdeasPage() {
     const [createMessage, setCreateMessage] = useState(false); const [selectedTag, setSelectedTag] = useState('');
     const [tagsArray, setTagsArray] = useState([]);
     const [filterShow, setFilterShow] = useState()
+    const access_token = localStorage.getItem('access_token');
+    const [formData, setFormData] = useState({
+        name: '',
+        description: '',
+        tag: ''
+    });
     const maxDescLength = 300;
     const maxNameLength = 30;
     const maxTagLength = 25;
@@ -38,13 +43,7 @@ function IdeasPage() {
             handleChange(e)
         }
     };
-    const access_token = localStorage.getItem('access_token');
     const handleChange = (e) => { setFormData({ ...formData, [e.target.name]: e.target.value }); };
-    const [formData, setFormData] = useState({
-        name: '',
-        description: '',
-        tag: ''
-    });
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!access_token) {
@@ -93,6 +92,7 @@ function IdeasPage() {
                     ideaBlock.name.toLowerCase().includes(searchQuery.toLowerCase())
                 )
             );
+            setSelectedTag('')
         }
     }, [ideas, searchQuery]);
     useEffect(() => {
@@ -102,11 +102,9 @@ function IdeasPage() {
             setFilteredIdeas(
                 ideas.filter(ideaBlock => ideaBlock.tag === selectedTag)
             );
+            setSearchQuery('')
         }
     }, [ideas, selectedTag]);
-    const handleTagClick = (tag) => {
-        setSelectedTag(tag);
-    };
     useEffect(() => {
         getAllIdeas(access_token).then((response) => {
             setIdeas(response.data);
@@ -115,6 +113,9 @@ function IdeasPage() {
             console.log(error);
         });
     }, [])
+    const handleTagClick = (tag) => {
+        setSelectedTag(tag);
+    };
     function filterIdeas() {
         if (tab === 'all') {
             setFilteredIdeas(ideas);
@@ -144,52 +145,31 @@ function IdeasPage() {
                     <div className="create_idea_container" style={{ display: create ? 'flex' : 'none' }}>
                         <form className='create_idea_form' style={{ display: createMessage ? 'none' : 'flex' }} onSubmit={handleSubmit}>
                             <div style={{ position: 'absolute', top: '15px', right: '15px', width: '30px', height: '30px' }} onClick={showCreate}>
-                                <img src="../src/assets/icons/cross-fucking-normal.svg" style={{ width: '100%', height: '100%' }} alt="" />
+                                <img src="../src/assets/icons/cross-regular.svg" style={{ width: '100%', height: '100%' }} alt="" />
                             </div>
-                            <input type="text"
-                                value={formData.name} name='name' onChange={handleNameChange}
-                                placeholder='Название Идеи' className='idea_name_create' />
+                            <input className='idea_name_create' type="text" value={formData.name} name='name' onChange={handleNameChange} placeholder='Название Идеи' />
                             <div className='character_limit'>{maxNameLength - formData.name.length}/{maxNameLength}</div>
-                            <textarea type="text"
-                                value={formData.description} name='description' onChange={handleDescChange}
-                                placeholder='Описание Идеи' className='idea_desc_create' />
+                            <textarea type="text" value={formData.description} name='description' onChange={handleDescChange} placeholder='Описание Идеи' className='idea_desc_create' />
                             <div className='character_limit'>{maxDescLength - formData.description.length}/{maxDescLength}</div>
-                            <input type="text"
-                                value={formData.tag} name='tag' onChange={handleTagChange}
-                                placeholder='Тег' className='idea_tag_create' />
+                            <input className='idea_tag_create' type="text" value={formData.tag} name='tag' onChange={handleTagChange} placeholder='Тег' />
                             <div className='character_limit'>{maxTagLength - formData.tag.length}/{maxTagLength}</div>
                             <button type='submit'>Создать Идею</button>
                         </form>
                     </div>
                     <div className='filter_window' style={{ display: filterShow ? 'flex' : 'none' }}>
                         <div onClick={() => setSelectedTag('')}>CLEAR</div>
-                        {tagsArray.map((tag, index) => (
-                            <p key={index} onClick={() => handleTagClick(tag)}>
-                                {tag}
-                            </p>
-                        ))}
+                        {tagsArray.map((tag, index) => (<p key={index} onClick={() => handleTagClick(tag)}> {tag} </p>))}
                     </div>
                     <div className='ideas_header'>
                         <h1 className='ideas_title'>Идеи</h1>
                         <div className="search_container">
                             <button className='create_idea_button' onClick={showCreate}>Создать Идею</button>
-                            <input className='ideas_search'
-                                type="text"
-                                placeholder="Поиск..."
-                                value={searchQuery}
-                                onChange={e => setSearchQuery(e.target.value)}
-                            />
+                            <input className='ideas_search' type="text" placeholder="Поиск..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
                         </div>
                         <div id="filter_container">
                             <div onClick={() => setTab('all')} className={`tab_filter ${tab === 'all' ? 'active_tab' : ''}`}>Все идеи</div>
                             <div onClick={() => setTab('my')} className={`tab_filter  ${tab === 'my' ? 'active_tab' : ''}`}>Мои идеи</div>
-                            <input
-                                type="text"
-                                value={selectedTag}
-                                placeholder='Тег'
-                                className='selected_tag'
-                                readOnly
-                            />
+                            <input type="text" value={selectedTag} placeholder='Тег' className='selected_tag' readOnly />
                             <div className='option' onClick={showFilter}>
                                 <img src={filter} />
                             </div>
