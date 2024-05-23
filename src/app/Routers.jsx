@@ -7,6 +7,7 @@ import IdeasPage from "@/pages/IdeasPage.jsx";
 import UserPage from '../pages/UserPage';
 import IdeaPage from '@/pages/IdeaPage.jsx'
 import TeamsPage from '../pages/TeamsPage';
+import SignUpPage from '../pages/SignUpPage';
 
 const Routers = () => {
     return (
@@ -14,6 +15,7 @@ const Routers = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/login/:error" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
             <Route path="/ideas" element={<IdeasPage />} />
             <Route path="/idea/:id" element={<IdeaPage />} />
             <Route path="/register" element={<RegisterPage />} />

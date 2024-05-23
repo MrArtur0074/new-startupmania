@@ -135,7 +135,6 @@ function IdeasPage() {
                             <p>{creator.username}</p>
                         </div>
                         {mainIdea.name}
-                        <p onClick={() => console.log(mainIdea)}>m</p>
                         <div className='idea_buttons'>
                             <div className='idea_block_button' onClick={handleLike} style={{ color: 'rgb(221, 64, 63)' }}>
                                 <img className='idea_button_img'
@@ -152,7 +151,7 @@ function IdeasPage() {
                     <div className='idea_desc_n_tags idea_page_box_transparent_blur_any_border'>
                         <h2>ОПИСАНИЕ</h2>
                         <p>{mainIdea.description}</p>
-                        <p style={{color:'#934AF7'}}>{mainIdea.tag}</p>
+                        <p style={{color:'#934AF7'}}>#{mainIdea.tag}</p>
                     </div>
                     <div className='idea_comments idea_page_box_transparent_blur_any_border'>
                         <h2>КОММЕНТАРИИ</h2>

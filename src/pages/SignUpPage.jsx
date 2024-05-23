@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../pages/LoginPage.scss'
 import { UserContext } from "@/App.jsx";
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const SignUp = () => {
     const navigate = useNavigate ();
@@ -76,7 +77,7 @@ const SignUp = () => {
             phone_number: formData.phone,
           });
           try {
-            const response = await axiosClient.post('/regauth/register/',data);
+            const response = await axios.post('/regauth/register/',data);
             if (response.status === 200) {navigate('/confirm')}
           } catch (e) {
             console.log(e);
