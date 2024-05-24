@@ -1,0 +1,5 @@
+#error_page{background-color:#B3DAF6;width:100%;height:100vh;display:flex;justify-content:center;align-items:center;font-family:'Unbounded',sans-serif;}
+#error_header{font-size:80px;z-index:100;position:absolute;}
+#error_text{font-size:24px;z-index:100;position:absolute;bottom:50px;text-align:center;}
+#error_container{width:320px;height:210px;position:relative;display:flex;justify-content:center;}
+#error_navigate{border-radius:25px;position:absolute;bottom:0;font-size:18px;z-index:100;background:rgba(255, 255, 255, 0.3);padding:10px;backdrop-filter:blur(10px);border:solid 1px #000;}
