@@ -21,6 +21,7 @@
 .team_name{font-size:26px;font-family:'Unbounded',sans-serif;}
 .team_idea{color:#934AF7;font-size:16px;font-family:'Montserrrat',sans-serif;display:flex;flex-wrap:wrap;cursor:pointer;}
 .team_name , .team_idea{word-wrap:break-word;word-break:break-all;overflow-wrap:break-word;}
+.team_idea:hover{color:#FBB800;}
 @media screen and (max-width:1000px) {
     .teams_header{width:700px;}
     .teams_container{width:700px;}
