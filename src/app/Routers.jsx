@@ -9,6 +9,7 @@ import IdeaPage from '@/pages/IdeaPage.jsx'
 import TeamsPage from '../pages/TeamsPage';
 import SignUpPage from '../pages/SignUpPage';
 import TeamPage from '../pages/TeamPage';
+import TournamentPage from '../pages/TournamentPage';
 
 const Routers = () => {
     return (
@@ -24,6 +25,7 @@ const Routers = () => {
             <Route path="/profile/:id" element={<UserPage />} />
             <Route path="/teams/" element={<TeamsPage />} />
             <Route path="/team/:id" element={<TeamPage />} />
+            <Route path="/leaderboard" element={<TournamentPage />} />
         </Routes>
     );
 }

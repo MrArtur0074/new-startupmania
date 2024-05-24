@@ -1,0 +1,37 @@
+#tournament_page{background-color:#B3DAF6;width:100%;display:flex;flex-direction:column;align-items:center;padding-top:50px;gap:50px;box-sizing:border-box;min-height:100vh;}
+.stage_time{width:fit-content;display:flex;padding:20px 40px;border:1px solid #000;border-radius:36px;background-color:rgba($color: #fff, $alpha: 0.3);backdrop-filter:blur(10px);flex-direction:column;align-items:center;font-size:22px;font-family:'Exo 2';}
+.time_remaining{font-size:60px;color:#934AF7;font-family:'Unbounded',sans-serif;}
+.leaderboard {list-style-type:none;counter-reset:list-counter;font-family:'Unbounded', sans-serif;font-size: 3em;display:flex;flex-direction:column;border:1px solid #000;width:900px;backdrop-filter:blur(10px);background-color:rgba($color: #fff, $alpha: 0.3);padding:15px;border-radius:36px;box-sizing:border-box;}
+.leaderboard li::before {content: counter(list-counter) ". ";counter-increment:list-counter;font-family:inherit;font-size:inherit;}
+.leaderboard_team{display:flex;flex-direction:row;justify-content:space-between;width:100%;align-items:center;}
+.leaderboard_team_points{font-size:22px;}
+.leaderboard_team_name{font-size:32px;cursor:pointer;}
+.leaderboard_team_name:hover{color:#FBB800;}
+#first_place{background-image:url('/src/assets/TournamentPageAssets/gold_glitter.gif');background-repeat:repeat;background-position:left;}
+.leaderboard_title{font-size:48px;width:100%;text-align:center;font-family:'Exo 2';margin-bottom:15px;}
+.crown{justify-content:center;width:100%;height:fit-content;display:flex;>img{width:50px;height:auto;}background-image:url('/src/assets/TournamentPageAssets/gold_glitter.gif');background-repeat:repeat;background-position:left;}
+@media screen and (max-width:1000px) {
+    #tournament_page{padding:70px 0;}
+    .leaderboard{width:700px;font-size:2.7em;}
+    .leaderboard_title{font-size:42px;}
+    .leaderboard_team_name{font-size:29px;}
+    .leaderboard_team_points{font-size:20px;}
+}
+@media screen and (max-width:700px) {
+    .leaderboard{width:425px;font-size:2.4em;}
+    .leaderboard_title{font-size:38px;}
+    .leaderboard_team_name{font-size:25px;}
+    .leaderboard_team_points{font-size:17px;}
+    .stage_time{font-size:18px;}
+    .time_remaining{font-size:48px;}
+    .crown{>img{width:40px;}}
+}
+@media screen and (max-width:425px) {
+    .leaderboard{width:100%;font-size:1.7em;border-radius:10px;}
+    .leaderboard_title{font-size:32px;}
+    .leaderboard_team_name{font-size:17px;}
+    .leaderboard_team_points{font-size:15px;}
+    .stage_time{font-size:14px;}
+    .time_remaining{font-size:36px;}
+    .crown{>img{width:35px;}}
+}
